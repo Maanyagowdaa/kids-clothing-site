@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    
+    <footer>
+  <p>© 2026 Kids Clothing Store</p>
+</footer>
+
+<h2>Your Cart</h2>
+
+<div id="cart-items"></div>
+
+<script src="../javascript/script.js"></script>
+
+<script>
+function placeOrder() {
+    alert("🎉 Order placed successfully!");
+    localStorage.removeItem("cart"); // clear cart
+    location.reload();
+}
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let total = 0;
+
+let container = document.getElementById("cart-items");
+
+function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    location.reload();
+}
+
+function clearCart() {
+    localStorage.removeItem("cart");
+    location.reload();
+}
+
+if(cart.length === 0){
+    container.innerHTML = "<p>Your cart is empty 😢</p>";
+} else {
+   cart.forEach((item, index) => {
+    container.innerHTML += `
+    <div class="cart-item">
+        <img src="${item.image}" width="100">
+        <p>${item.name}</p>
+        <p>₹${item.price}</p>
+        <button onclick="removeItem(${index})">❌</button>
+    </div>`;
+    
+
+    total += item.price; 
+});
+}
+
+document.getElementById("total").innerText = "Total: ₹" + total;
+
+</script>
+
+
+<div class="cart-summary">
+    <h3 id="total"></h3>
+
+    <button onclick="clearCart()">Clear Cart</button>
+    <button onclick="placeOrder()">Buy Now</button>
+</div>
+
+</body>
+</html>
